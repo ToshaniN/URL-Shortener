@@ -1,11 +1,29 @@
 //Function that adds text to short URL box when button is clicked
-var howManyURLs = 0;
+let howManyURLs = 0;
 function shorten(){
+    //Check last created URL, and make unique token accordingly
+    let sortedKeys = Object.keys(localStorage).sort();
+    let lastURL = "";
+    if (sortedKeys.length != 0) {
+        lastURL = sortedKeys[sortedKeys.length - 1];
+        howManyURLs = parseInt(lastURL.substring(30)) + 1; //30 is index after https...Token
+    }
+    let shortURL = "https://urlshortener.com/Token" + howManyURLs;
+
+    //Check if long url has already been shortened, return mapped short url if yes
+    let saved = Object.entries(localStorage);
+    for (const [key, value] of saved) {
+        if (value == document.getElementsByName("Long URL")[0].value) {
+            shortURL = key;
+            break;
+        }
+    }
+
+    //Set short URL value to what was found/calculated above 
     document.getElementsByName("Short URL")[0].value = "";
-    document.getElementsByName("Short URL")[0].value = "https://urlshortener.com/Token" + howManyURLs;
+    document.getElementsByName("Short URL")[0].value = shortURL;
     document.getElementById("copy").disabled = false;
-    localStorage.setItem(document.getElementsByName("Short URL")[0].value, document.getElementsByName("Long URL")[0].value);
-    howManyURLs++;
+    localStorage.setItem(shortURL, document.getElementsByName("Long URL")[0].value);
 }
 
 //Function to copy the produced URLs
@@ -17,12 +35,11 @@ function copyToClipboard(urlName){
     }                
     url.select();
     navigator.clipboard.writeText(url.value);
-    //alert("Short URL copied successfully");
 }
 
 //Function to retrieve a short URL's mapped long URL
 function retrieve(){
-    var longURL = localStorage.getItem(document.getElementsByName("Short URL2")[0].value);
+    let longURL = localStorage.getItem(document.getElementsByName("Short URL2")[0].value);
     document.getElementsByName("Long URL2")[0].value = "";
     document.getElementsByName("Long URL2")[0].value = longURL;
     document.getElementById("copy2").disabled = false;
