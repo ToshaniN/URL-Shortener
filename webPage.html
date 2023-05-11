@@ -2,135 +2,62 @@
 <html>
     <head>
         <title>URL Shortener</title>
+        <link rel="stylesheet" type="text/css" href="design.css"/>
     </head>
 
-    <body style="background-color: #8EB0FF; font-family: sans-serif; ">
-        <h1 style="text-align: center; background-color:#8EF3FF;">URL Shortener</h1>
+    <body>
+        <h1>URL Shortener</h1>
         
         <!--For converting long to short URL-->
-        <div style="display: inline-block; width: 600px; padding-top: 25px;">
-            <h3 style="text-indent: 40px;">Enter a long URL here to generate a short URL</h3>
-            <div style="text-indent: 100px;">
+        <div id="generateShort">
+            <h3>Enter a long URL here to generate a short URL</h3>
+            <div>
                 <!--Place to enter the long URL-->
-                <label for="Long URL" style="font-weight: bold;">Enter URL:</label>
-                <input type="text" id="Long URL" name="Long URL" style="width: 250px;" 
-                    required pattern="(https:\/\/).*(\.com|\.org|\.ca|\.gov)(\/|\/.*|.{0})" placeholder="https://example.com">
+                <label for="Long URL">Enter URL:</label>
+                <input type="text" id="Long URL" name="Long URL" required 
+                       pattern="(https:\/\/).*(\.com|\.org|\.ca|\.gov)(\/|\/.*|.{0})" 
+                       placeholder="https://example.com">
 
                 <!--Button that will generate short URL-->
-                <button type="button" id="generate" disabled onclick="shorten()" 
-                        style="background-color:#8EF3FF; border-radius: 5px;">Generate</button>   
+                <button type="button" id="generate" disabled onclick="shorten()">Generate</button>   
 
-                <!-- <button type="button" id="clear" onclick="clear('Long URL')" 
-                        style="background-color:#8EF3FF; border-radius: 5px;">Clear</button> -->
+                <!-- <button type="button" id="clear" onclick="clear('Long URL')">Clear</button> -->
             </div>
             <br>
-            <div style="text-indent: 100px;">
+            <div>
                 <!--Place to view and copy short URL-->
-                <label for="Short URL" style="font-weight: bold;">Short URL:</label>
-                <input type="text" id="Short URL" name="Short URL" style="width: 250px;" readonly="readonly" placeholder="View short URL here">
+                <label for="Short URL">Short URL:</label>
+                <input type="text" id="Short URL" name="Short URL" readonly="readonly" placeholder="View short URL here">
 
-                <button type="button" id="copy" disabled onclick="copyToClipboard('copy')"
-                        style="background-color:#8EF3FF; border-radius: 5px;">Copy</button>
+                <button type="button" id="copy" disabled onclick="copyToClipboard('copy')">Copy</button>
             </div>
         </div>
         
-
         <!--For retrieving short URL's mapped long URL-->
-        <div style="display: inline-block;">
-            <h3 style="text-indent: 40px;">Enter a short URL here to retrieve its long URL</h3>
-            <div style="text-indent: 100px;">
+        <div id="retrieveLong">
+            <h3>Enter a short URL here to retrieve its long URL</h3>
+            <div>
                 <!--Place to enter the short URL-->
-                <label for="Short URL2" style="font-weight: bold; text-align:left">Enter URL:</label>
-                <input type="text" id="Short URL2" name="Short URL2" style="width: 250px; text-align:left ;" 
-                        required pattern="(https:\/\/).*(\.com|\.org|\.ca|\.gov)(\/|\/.*|.{0})" placeholder="https://example.com">
+                <label for="Short URL2">Enter URL:</label>
+                <input type="text" id="Short URL2" name="Short URL2" required 
+                        pattern="(https:\/\/).*(\.com|\.org|\.ca|\.gov)(\/|\/.*|.{0})" 
+                        placeholder="https://example.com">
 
                 <!--Button that will retrieve long URL-->
-                <button type="button" id="retrieve" disabled onclick="retrieve()" 
-                        style="background-color:#8EF3FF; border-radius: 5px;">Retrieve</button>   
+                <button type="button" id="retrieve" disabled onclick="retrieve()">Retrieve</button>   
                 
-                <!-- <button type="button" id="clear2" onclick="clear('Short URL2')" 
-                        style="background-color:#8EF3FF; border-radius: 5px;">Clear</button> -->
+                <!-- <button type="button" id="clear2" onclick="clear('Short URL2')">Clear</button> -->
             </div>
             <br>
-            <div style="text-indent: 100px;">
+            <div>
                 <!--Place to view and copy long URL-->
-                <label for="Long URL2" style="font-weight: bold;">Long URL:</label>
-                <input type="text" id="Long URL2" name="Long URL2" style="width: 250px;" readonly="readonly" placeholder="View long URL here">
+                <label for="Long URL2">Long URL:</label>
+                <input type="text" id="Long URL2" name="Long URL2" readonly="readonly" placeholder="View long URL here">
 
-                <button type="button" id="copy2" disabled onclick="copyToClipboard('copy2')"
-                        style="background-color:#8EF3FF; border-radius: 5px;">Copy</button>
+                <button type="button" id="copy2" disabled onclick="copyToClipboard('copy2')">Copy</button>
             </div>
         </div>
 
-
-        <script>
-            //Function that adds text to short URL box when button is clicked
-            var howManyURLs = 0;
-            function shorten(){
-                document.getElementsByName("Short URL")[0].value = "";
-                document.getElementsByName("Short URL")[0].value = "https://urlshortener.com/Token" + howManyURLs;
-                document.getElementById("copy").disabled = false;
-                localStorage.setItem(document.getElementsByName("Short URL")[0].value, document.getElementsByName("Long URL")[0].value);
-                howManyURLs++;
-            }
-
-            //Function to copy the produced URLs
-            function copyToClipboard(urlName){
-                if (urlName == 'copy') {
-                    var url = document.getElementById("Short URL");
-                } else {
-                    var url = document.getElementById("Long URL2");
-                }                
-                url.select();
-                navigator.clipboard.writeText(url.value);
-                //alert("Short URL copied successfully");
-            }
-
-            //Function to retrieve a short URL's mapped long URL
-            function retrieve(){
-                var longURL = localStorage.getItem(document.getElementsByName("Short URL2")[0].value);
-                document.getElementsByName("Long URL2")[0].value = "";
-                document.getElementsByName("Long URL2")[0].value = longURL;
-                document.getElementById("copy2").disabled = false;
-            }
-
-            // function clear(urlId) {
-            //     alert("Made it here1");
-            //     if (urlId == 'Long URL') {
-            //         alert("Made it here2");
-            //         document.getElementsByName("Long URL")[0].value = "";
-            //         alert("Made it here2");
-            //     } else {
-            //         document.getElementsByName("Short URL2")[0].value = "";
-            //     }
-
-            // }
-
-            //Checks if URL is valid, and enables button if yes, disables if invalid, clears returned URL on any changes
-            const enteredURL = document.getElementById("Long URL");
-            enteredURL.addEventListener("input", (event) => {
-                const isValid = event.target.checkValidity();
-                if (isValid) {
-                    document.getElementById("generate").disabled = false;
-                } else {
-                    document.getElementById("generate").disabled = true;
-                }
-                document.getElementById("Short URL").value = "";
-                document.getElementById("copy").disabled = true;
-            });
-
-            const enteredURL2 = document.getElementById("Short URL2");
-            enteredURL2.addEventListener("input", (event) => {
-                const isValid = event.target.checkValidity();
-                if (isValid) {
-                    document.getElementById("retrieve").disabled = false;
-                } else {
-                    document.getElementById("retrieve").disabled = true;
-                }
-                document.getElementById("Long URL2").value = "";
-                document.getElementById("copy2").disabled = true;
-            });
-        </script>
-
+        <script type="text/javascript" src="functions.js"></script>
     </body>
 </html>
