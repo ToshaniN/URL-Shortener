@@ -1,7 +1,10 @@
 //Function that adds text to short URL box when button is clicked
 let howManyURLs = 0;
+let longToShort = Object.fromEntries(Object.entries(localStorage).map(([key,value]) => [value,key]));
+
 function shorten(){
     //Check last created URL, and make unique token accordingly
+    let longURL = document.getElementsByName("Long URL")[0].value;
     let sortedKeys = Object.keys(localStorage).sort();
     let lastURL = "";
     if (sortedKeys.length != 0) {
@@ -11,19 +14,18 @@ function shorten(){
     let shortURL = "https://urlshortener.com/Token" + howManyURLs;
 
     //Check if long url has already been shortened, return mapped short url if yes
-    let saved = Object.entries(localStorage);
-    for (const [key, value] of saved) {
-        if (value == document.getElementsByName("Long URL")[0].value) {
-            shortURL = key;
-            break;
-        }
+    if (longToShort.hasOwnProperty(longURL)) {
+            shortURL = longToShort[longURL];
+    } else {
+        longToShort[longURL] = shortURL;
+        console.log(longToShort);
     }
 
     //Set short URL value to what was found/calculated above 
     document.getElementsByName("Short URL")[0].value = "";
     document.getElementsByName("Short URL")[0].value = shortURL;
     document.getElementById("copy").disabled = false;
-    localStorage.setItem(shortURL, document.getElementsByName("Long URL")[0].value);
+    localStorage.setItem(shortURL, longURL);
 }
 
 //Function to copy the produced URLs

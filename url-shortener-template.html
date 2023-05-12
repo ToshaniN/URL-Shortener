@@ -16,7 +16,7 @@
                 <label for="Long URL">Enter URL:</label>
                 <input type="text" id="Long URL" name="Long URL" required  
                        placeholder="https://example.com"
-                       pattern="((http|https):\/\/)(www\.)?.{2,256}\.[a-z]{2,6}(\/|\/.*|.{0})">
+                       pattern="((http|https):\/\/)(www\.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)">
                 <!--pattern="(https:\/\/).*(\.)(com|org|gov|net|edu|mil|info|za|in|ca)(\/|\/.*|.{0})"-->
 
                 <!--Button that will generate short URL-->
@@ -41,7 +41,7 @@
                 <!--Place to enter the short URL-->
                 <label for="Short URL2">Enter URL:</label>
                 <input type="text" id="Short URL2" name="Short URL2" required 
-                        pattern="((http|https):\/\/)(www\.)?.{2,256}\.[a-z]{2,6}(\/|\/.*|.{0})" 
+                        pattern="((http|https):\/\/)(www\.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\.[a-z]{2,6}\b([a-zA-Z0-9@:%._\\+~#?&//=]*)" 
                         placeholder="https://example.com">
 
                 <!--Button that will retrieve long URL-->
