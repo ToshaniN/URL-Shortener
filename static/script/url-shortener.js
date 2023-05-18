@@ -47,18 +47,6 @@ function retrieve(){
     document.getElementById("copy2").disabled = false;
 }
 
-// function clear(urlId) {
-//     alert("Made it here1");
-//     if (urlId == 'Long URL') {
-//         alert("Made it here2");
-//         document.getElementsByName("Long URL")[0].value = "";
-//         alert("Made it here2");
-//     } else {
-//         document.getElementsByName("Short URL2")[0].value = "";
-//     }
-
-// }
-
 //Checks if URL is valid, and enables button if yes, disables if invalid, clears returned URL on any changes
 const enteredURL = document.getElementById("Long URL");
 enteredURL.addEventListener("input", (event) => {

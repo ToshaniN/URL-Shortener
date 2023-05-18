@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>URL Shortener</title>
-        <link rel="stylesheet" type="text/css" href="style.css"/>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
     </head>
 
     <body>
@@ -21,8 +21,6 @@
 
                 <!--Button that will generate short URL-->
                 <button type="button" id="generate" disabled onclick="shorten()">Generate</button>   
-
-                <!-- <button type="button" id="clear" onclick="clear('Long URL')">Clear</button> -->
             </div>
             <br>
             <div>
@@ -45,9 +43,7 @@
                         placeholder="https://example.com">
 
                 <!--Button that will retrieve long URL-->
-                <button type="button" id="retrieve" disabled onclick="retrieve()">Retrieve</button>   
-                
-                <!-- <button type="button" id="clear2" onclick="clear('Short URL2')">Clear</button> -->
+                <button type="button" id="retrieve" disabled onclick="retrieve()">Retrieve</button>
             </div>
             <br>
             <div>
@@ -59,6 +55,6 @@
             </div>
         </div>
 
-        <script type="text/javascript" src="url-shortener.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='script/url-shortener.js') }}"></script>
     </body>
 </html>
