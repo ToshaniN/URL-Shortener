@@ -1,31 +1,37 @@
-//Function that adds text to short URL box when button is clicked
-let howManyURLs = 0;
-let longToShort = Object.fromEntries(Object.entries(localStorage).map(([key,value]) => [value,key]));
-
+//Function that shortens the provided longURL
 function shorten(){
-    //Check last created URL, and make unique token accordingly
-    let longURL = document.getElementsByName("Long URL")[0].value;
-    let sortedKeys = Object.keys(localStorage).sort();
-    let lastURL = "";
-    if (sortedKeys.length != 0) {
-        lastURL = sortedKeys[sortedKeys.length - 1];
-        howManyURLs = parseInt(lastURL.substring(30)) + 1; //30 is index after https...Token
-    }
-    let shortURL = "https://urlshortener.com/Token" + howManyURLs;
-
-    //Check if long url has already been shortened, return mapped short url if yes
-    if (longToShort.hasOwnProperty(longURL)) {
-            shortURL = longToShort[longURL];
-    } else {
-        longToShort[longURL] = shortURL;
-        console.log(longToShort);
-    }
-
-    //Set short URL value to what was found/calculated above 
+    let givenLongURL = document.getElementsByName("Long URL")[0].value;
     document.getElementsByName("Short URL")[0].value = "";
-    document.getElementsByName("Short URL")[0].value = shortURL;
+    //Send request to API with given long URL as parameter. Display shortURL in textbox
+    let shortURL;
+    let requestURL = new URL('http://127.0.0.1:5000/WantShortURL/');
+    requestURL.search = new URLSearchParams({ longURL: givenLongURL });
+    fetch(requestURL, { method: 'GET' })
+    .then(response => response.json())
+    .then(data => { shortURL = data; })
+    .then(() => {document.getElementsByName("Short URL")[0].value = shortURL['returned shortURL'];});
+    //Enable copy button
     document.getElementById("copy").disabled = false;
-    localStorage.setItem(shortURL, longURL);
+}
+
+//Function to retrieve a shortURL's mapped longURL
+function retrieve(){
+    let givenShortURL = document.getElementsByName("Short URL2")[0].value;
+    document.getElementsByName("Long URL2")[0].value = "";
+    //Send request to API with given short URL in body. Display longURL in textbox
+    let longURL;
+    fetch('http://127.0.0.1:5000/WantLongURL/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"shortURL": givenShortURL})
+    })
+    .then(response => response.json())
+    .then(data => { longURL = data; })
+    .then(() => {document.getElementsByName("Long URL2")[0].value = longURL['returned longURL'];});
+    //Enable copy button
+    document.getElementById("copy2").disabled = false;
 }
 
 //Function to copy the produced URLs
@@ -37,14 +43,6 @@ function copyToClipboard(urlName){
     }                
     url.select();
     navigator.clipboard.writeText(url.value);
-}
-
-//Function to retrieve a short URL's mapped long URL
-function retrieve(){
-    let longURL = localStorage.getItem(document.getElementsByName("Short URL2")[0].value);
-    document.getElementsByName("Long URL2")[0].value = "";
-    document.getElementsByName("Long URL2")[0].value = longURL;
-    document.getElementById("copy2").disabled = false;
 }
 
 //Checks if URL is valid, and enables button if yes, disables if invalid, clears returned URL on any changes
