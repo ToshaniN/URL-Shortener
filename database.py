@@ -3,9 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, Column, Integer, String, TIMESTAMP, func
 from sqlalchemy.ext.automap import automap_base
-from datetime import datetime
+import config
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:password123@localhost:3306/urls'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + config.connection['username'] + ':' + config.connection['password'] + '@localhost:3306/urls'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -18,6 +18,10 @@ class mapped_urls(Base):
     time = Column('time_created', TIMESTAMP, server_default=func.now())
         
 
-connection_string = "mysql+mysqlconnector://root:password123@localhost:3306/urls"
-engine = create_engine(connection_string, echo=True)
+connection_string = "mysql+mysqlconnector://" + config.connection['username'] + ':' + config.connection['password'] + "@localhost:3306/urls"
+engine = create_engine(connection_string)
+
+Session = sessionmaker(bind=engine)
+session = Session()
+
 Base.prepare(autoload_with=engine)
