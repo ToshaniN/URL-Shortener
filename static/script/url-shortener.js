@@ -7,9 +7,18 @@ function shorten(){
     let requestURL = new URL('http://127.0.0.1:5000/WantShortURL/');
     requestURL.search = new URLSearchParams({ longURL: givenLongURL });
     fetch(requestURL, { method: 'GET' })
-    .then(response => response.json())
+    .then((response) => {
+        if (response.ok) {
+            console.log("Response ok");
+            return response.json();
+        } else {
+            console.log("Rejecting");
+            return Promise.reject(response);
+        }
+    })
     .then(data => { shortURL = data; })
-    .then(() => {document.getElementsByName("Short URL")[0].value = shortURL['returned shortURL'];});
+    .then(() => {document.getElementsByName("Short URL")[0].value = shortURL['returned shortURL'];})
+    .catch(err => console.error(err));
     //Enable copy button
     document.getElementById("copy").disabled = false;
 }
@@ -27,9 +36,19 @@ function retrieve(){
         },
         body: JSON.stringify({"shortURL": givenShortURL})
     })
-    .then(response => response.json())
+    // If response is not okay (request fails with 4xx 5xx error) this will reject the promise
+    .then((response) => {
+        if (response.ok) {
+            console.log("Response ok");
+            return response.json();
+        } else {
+            console.log("Rejecting");
+            return Promise.reject(response);
+        }
+    })
     .then(data => { longURL = data; })
-    .then(() => {document.getElementsByName("Long URL2")[0].value = longURL['returned longURL'];});
+    .then(() => {document.getElementsByName("Long URL2")[0].value = longURL['returned longURL'];})
+    .catch(err => console.error(err));
     //Enable copy button
     document.getElementById("copy2").disabled = false;
 }
