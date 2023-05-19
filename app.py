@@ -6,6 +6,3 @@ api = Api(app)
 
 import routes
 import database
-
-if __name__ == "__main__":
-    app.run(debug=True)

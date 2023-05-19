@@ -1,4 +1,4 @@
-from __main__ import api
+from app import api
 from url_resource import *
 
 class Routes:
