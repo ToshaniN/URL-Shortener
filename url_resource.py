@@ -15,15 +15,7 @@ class WantShortURL(Resource):
         return Handler.getShortURL(longURL)
 
 # '/WantLongURL/'
-class WantLongURL(Resource):
-    # def options(self):
-    #     response = make_response()
-    #     response.headers.add("Access-Control-Allow-Origin", "*")
-    #     response.headers.add('Access-Control-Allow-Headers', "*")
-    #     response.headers.add('Access-Control-Allow-Methods', "*")
-    #     response.headers.add('Content-Type', 'application/json')
-    #     return response
-    
+class WantLongURL(Resource):    
     def post(self):
         receivedShortURL = request.get_json()
         shortURL = receivedShortURL["shortURL"]
